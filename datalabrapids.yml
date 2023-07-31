@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  rapidsai:
+    image: nvcr.io/nvidia/rapidsai/rapidsai-core:23.06-cuda11.8-runtime-ubuntu22.04-py3.10
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    command: ["--shm-size=24g", "--ulimit", "memlock=-1", "--ulimit", "stack=67108864"]
+    ports:
+      - 8888:8888
+      - 8787:8787
+      - 8786:8786
+    volumes:
+      - ../CODE:/rapids/notebooks/CODE
+      - ../DATA:/rapids/notebooks/DATA
+      # - volrapids:/rapids/notebooks
+volumes:
+  volrapids:
+    external: true
